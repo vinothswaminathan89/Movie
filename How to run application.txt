@@ -1,0 +1,7 @@
+1. Create the database,
+2. Run the DB Scripts
+3. Update the DB Connection String in web.config
+4. Update the Webapi port in movie.js 
+5. finally run the application
+
+-----Done-------  
