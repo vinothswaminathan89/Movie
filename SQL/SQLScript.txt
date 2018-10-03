@@ -1,0 +1,305 @@
+--CREATE DATABASE Movie
+
+USE Movie
+
+CREATE TABLE Movie
+(
+	MovieId NVARCHAR(50) Primary KEY
+	,Title NVARCHAR(100)
+	,Rated NVARCHAR(20)
+	,Released DATETIME
+	,Runtime INT
+	,ImageUrl NVARCHAR(300)	
+)
+
+CREATE TABLE Genre
+(
+	GenreId INT IDENTITY (1, 1)	PRIMARY KEY	
+	,GenreName NVARCHAR(100) NOT NULL UNIQUE 
+)
+
+CREATE TABLE Movie_xref_Genre
+(
+	GenreMapId INT IDENTITY (1, 1)
+	,GenreId INT
+	,MovieId NVARCHAR(50) 
+	,CONSTRAINT FK_Movie_xref_Genre_Movie FOREIGN KEY (MovieId) REFERENCES Movie (MovieId)
+	,CONSTRAINT FK_Movie_xref_Genre_Genre FOREIGN KEY (GenreId) REFERENCES Genre (GenreId) 
+)
+
+CREATE TABLE TimeOfDay
+(
+	TimeOfDayId INT IDENTITY (1, 1)	PRIMARY KEY	
+	,FilterName NVARCHAR(100) NOT NULL UNIQUE 
+)
+
+
+CREATE TABLE Session
+(
+	SessionId INT IDENTITY (1, 1)	PRIMARY KEY	
+	,MovieTime DATETIME
+	,Seats INT 
+	,MovieId NVARCHAR(50) 
+	,CONSTRAINT FK_Session_Movie FOREIGN KEY (MovieId) REFERENCES Movie (MovieId)
+)
+
+INSERT INTO Genre (GenreName) VALUES ('Animation')
+INSERT INTO Genre (GenreName) VALUES ('Comedy')
+INSERT INTO Genre (GenreName) VALUES ('Crime')
+INSERT INTO Genre (GenreName) VALUES ('Documentary')
+INSERT INTO Genre (GenreName) VALUES ('Drama')
+INSERT INTO Genre (GenreName) VALUES ('Fantasy')
+INSERT INTO Genre (GenreName) VALUES ('Horror')
+
+INSERT INTO TimeOfDay (FilterName) VALUES ('Before 6PM')
+INSERT INTO TimeOfDay (FilterName) VALUES ('After 6PM')
+
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379225', 'Movie 1', 'PG-13', GETDATE()-1, 150, 'https://flixoye.com/wp-content/uploads/2017/11/game-kannada-full-movie-hd-kannada-new-movies.jpg')
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379226', 'Movie 2', 'PG-11', GETDATE()-1, 152, 'https://s1-ssl.dmcdn.net/SK4nJ/526x297-bpJ.jpg')
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379227', 'Movie 3', 'PG-12', GETDATE()-1, 154, 'https://www.moviezoon.icu/wp-content/uploads/2018/04/Subedar-Joginder-Singh-Full-Movie-Download.jpg')
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379228', 'Movie 4', 'PG-13', GETDATE()-1, 170, 'https://i.ytimg.com/vi/uc1PTwCO9l8/maxresdefault.jpg')
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379229', 'Movie 5', 'PG-10', GETDATE()-1, 140, 'https://wallpapers.filmibeat.com/ph-1024x768/2016/04/24-suriya-movie_146097658000.jpg')
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379230', 'Movie 7', 'PG-13', GETDATE()-1, 250, 'https://www.whoa.in/20150417-Whoa/Point-Break-2015-Upcoming-Hollywood-Action-Movies-HD-Poster.jpg')
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379231', 'Movie 8', 'PG-14', GETDATE()-1, 120, 'https://weneedfun.com/wp-content/uploads/2016/11/HD-Movie-Wallpapers-20.jpg')
+INSERT INTO Movie (MovieId, Title, Rated, Released, Runtime, ImageUrl) VALUES
+('tt0379232', 'Movie 9', 'PG-15', GETDATE()-1, 143, 'https://i.ytimg.com/vi/bS5P_LAqiVg/maxresdefault.jpg')
+
+DECLARE @DATE1 DATETIME = CONVERT(DATE, GETDATE())
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 10, @DATE1), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 14, @DATE1), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 18, @DATE1), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 22, @DATE1), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 11, @DATE1), 167) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 13, @DATE1), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 20, @DATE1), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 10, @DATE1), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 13, @DATE1), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 17, @DATE1), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 21, @DATE1), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379228', DATEADD(HOUR, 18, @DATE1), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379228', DATEADD(HOUR, 22, @DATE1), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 12, @DATE1), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 16, @DATE1), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 18, @DATE1), 17) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379230', DATEADD(HOUR, 10, @DATE1), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379230', DATEADD(HOUR, 18, @DATE1), 185) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379231', DATEADD(HOUR, 10, @DATE1), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379231', DATEADD(HOUR, 20, @DATE1), 185) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379232', DATEADD(HOUR, 17, @DATE1), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379232', DATEADD(HOUR, 22, @DATE1), 185) 
+
+DECLARE @DATE2 DATETIME = CONVERT(DATE, GETDATE()+1)
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 10, @DATE2), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 14, @DATE2), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 18, @DATE2), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 22, @DATE2), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 11, @DATE2), 167) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 13, @DATE2), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 20, @DATE2), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 10, @DATE2), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 13, @DATE2), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 17, @DATE2), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 21, @DATE2), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379228', DATEADD(HOUR, 18, @DATE2), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379228', DATEADD(HOUR, 22, @DATE2), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 12, @DATE2), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 16, @DATE2), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 18, @DATE2), 17) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379230', DATEADD(HOUR, 10, @DATE2), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379230', DATEADD(HOUR, 18, @DATE2), 185) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379231', DATEADD(HOUR, 10, @DATE2), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379231', DATEADD(HOUR, 20, @DATE2), 185) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379232', DATEADD(HOUR, 17, @DATE2), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379232', DATEADD(HOUR, 22, @DATE2), 185) 
+
+
+DECLARE @DATE3 DATETIME = CONVERT(DATE, GETDATE()+2)
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 10, @DATE3), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 14, @DATE3), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 18, @DATE3), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379225', DATEADD(HOUR, 22, @DATE3), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 11, @DATE3), 167) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 13, @DATE3), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379226', DATEADD(HOUR, 20, @DATE3), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 10, @DATE3), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 13, @DATE3), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 17, @DATE3), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379227', DATEADD(HOUR, 21, @DATE3), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379228', DATEADD(HOUR, 18, @DATE3), 17) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379228', DATEADD(HOUR, 22, @DATE3), 12) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 12, @DATE3), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 16, @DATE3), 185) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379229', DATEADD(HOUR, 18, @DATE3), 17) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379230', DATEADD(HOUR, 10, @DATE3), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379230', DATEADD(HOUR, 18, @DATE3), 185) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379231', DATEADD(HOUR, 10, @DATE3), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379231', DATEADD(HOUR, 20, @DATE3), 185) 
+
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379232', DATEADD(HOUR, 17, @DATE3), 187) 
+INSERT INTO Session (MovieId, MovieTime, Seats) VALUES ('tt0379232', DATEADD(HOUR, 22, @DATE3), 185) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379231', 1) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379231', 3) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379232', 3) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379232', 2) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379230', 4) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379230', 2) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379229', 1) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379229', 2) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379228', 1) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379228', 5) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379227', 1) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379227', 2) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379229', 4) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379229', 5) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379225', 1) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379225', 2) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379226', 1) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379226', 2) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379227', 6) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379225', 3) 
+
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379226', 4) 
+INSERT INTO Movie_xref_Genre (MovieId, GenreId) VALUES ('tt0379225', 5) 
+
+-- =============================================
+-- Author:		Vinoth S
+-- Create date: 2 OCT 2018
+-- Description:	Get the Movies Info
+-- =============================================
+USE Movie
+GO
+CREATE PROCEDURE proc_GetMoviesInfo
+	@MovieDate DATETIME = NULL,
+	@TimeOfDayId VARCHAR(50) = NULL,
+	@GenreId VARCHAR(50) = NULL,
+	@StartIndex INT = 0,
+	@EndIndex INT = 20
+AS
+BEGIN
+	SET NOCOUNT ON;	
+	IF(@MovieDate IS NULL)
+	BEGIN
+		SET @MovieDate = GETDATE()
+	END
+	SELECT MovieId
+	,Row_Idx
+	,TotalCount
+	,Title 
+	,Rated 
+	,Released 
+	,Runtime 
+	,ImageUrl 
+		FROM(SELECT M.MovieId
+		,ROW_NUMBER() OVER(ORDER BY M.MovieId ASC) AS Row_Idx
+		,COUNT(M.MovieId) TotalCount
+		,Title 
+		,Rated 
+		,Released 
+		,Runtime 
+		,ImageUrl 
+		FROM Movie m 
+		INNER JOIN Session s ON s.MovieId = m.MovieId
+		INNER JOIN Movie_xref_Genre G ON G.MovieId = M.MovieId
+		WHERE CAST(s.MovieTime AS DATE) = CAST(@MovieDate AS DATE) 
+		AND (
+		(@GenreId IS NOT NULL AND G.GenreId IN (SELECT VALUE FROM STRING_SPLIT(@GenreId, ',')) 
+		OR @GenreId IS NULL)
+		)
+		AND (
+		(@TimeOfDayId = 1 AND CAST(s.MovieTime AS TIME) BETWEEN '00:00' AND '18:00') 
+		OR (@TimeOfDayId = 2 AND CAST(s.MovieTime AS TIME) BETWEEN '18:01' AND '23:59') 
+		OR (@TimeOfDayId IS NULL)
+		OR (@TimeOfDayId = '1,2')
+		OR (@TimeOfDayId = '2,1')
+		) GROUP BY m.MovieId, m.Title, m.ImageUrl, m.Rated, m.Released, m.Runtime
+	) TM WHERE Row_Idx BETWEEN @StartIndex AND @EndIndex
+END
+GO
+
+-- =============================================
+-- Author:		Vinoth S
+-- Create date: 2 OCT 2018
+-- Description:	Get the Session Info
+-- =============================================
+USE Movie
+GO
+CREATE PROCEDURE proc_GetSessionInfo
+	@MovieDate DATETIME = NULL
+AS
+BEGIN
+	SET NOCOUNT ON;
+	IF(@MovieDate IS NULL)
+	BEGIN
+		SET @MovieDate = GETDATE()
+	END
+	SELECT MovieId, SessionId, MovieTime, Seats FROM Session WHERE CAST(MovieTime AS DATE) = CAST(@MovieDate AS DATE) 
+END
+GO
+
+-- =============================================
+-- Author:		Vinoth S
+-- Create date: 2 OCT 2018
+-- Description:	Get the TimeOfDay 
+-- =============================================
+USE Movie
+GO
+CREATE PROCEDURE proc_GetTimeOfDay 	
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT TimeOfDayId, FilterName FROM TimeOfDay 
+END
+GO
+
+-- =============================================
+-- Author:		Vinoth S
+-- Create date: 2 OCT 2018
+-- Description:	Get the Genre
+-- =============================================
+USE Movie
+GO
+CREATE PROCEDURE proc_GetGenre 	
+AS
+BEGIN
+	SET NOCOUNT ON;
+	SELECT GenreId, GenreName FROM Genre 
+END
+GO
+
